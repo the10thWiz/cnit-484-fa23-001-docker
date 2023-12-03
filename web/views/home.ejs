@@ -1,0 +1,42 @@
+<%- include("partials/header"); -%>
+
+<style>
+  body {
+    background-color: #C7E1BA;
+    text-align: center;
+    padding: 50px;
+  }
+
+  .welcome {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #fffaca;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    font-size: 3em;
+    color: #000000;
+  }
+
+  h3 {
+    color: #555;
+  }
+
+  .clinic-image {
+    margin-top: 20px;
+    max-width: 100%; /* Set the maximum width to 100% of its container */
+    height: auto; /* Maintain the image's aspect ratio */
+  }
+</style>
+
+<div class="welcome">
+  <h1>CNIT CLINIC</h1>
+  <h3>Your Trusted Healthcare Partner</h3>
+  <!-- Add more content or decorations as needed -->
+</div>
+
+<img class="clinic-image" src="images/park.jpg" alt="Clinic Image">
+
+<%- include("partials/footer"); -%>

@@ -1,0 +1,57 @@
+services:
+  mail:
+    # image: ghcr.io/docker-mailserver/docker-mailserver:latest
+    build: ./docker-mail-server
+    # Provide the FQDN of your mail server here (Your DNS MX record should point to this value)
+    hostname: mail.example.com
+    env_file: mailserver.env
+    # More information about the mail-server ports:
+    # https://docker-mailserver.github.io/docker-mailserver/latest/config/security/understanding-the-ports/
+    # To avoid conflicts with yaml base-60 float, DO NOT remove the quotation marks.
+    ports:
+      - "25:25"    # SMTP  (explicit TLS => STARTTLS, Authentication is DISABLED => use port 465/587 instead)
+      - "143:143"  # IMAP4 (explicit TLS => STARTTLS)
+      - "465:465"  # ESMTP (implicit TLS)
+      - "587:587"  # ESMTP (explicit TLS => STARTTLS)
+      - "993:993"  # IMAP4 (implicit TLS)
+    volumes:
+      - ./docker-data/dms/mail-data/:/var/mail/
+      - ./docker-data/dms/mail-state/:/var/mail-state/
+      - ./docker-data/dms/mail-logs/:/var/log/mail/
+      - ./docker-data/dms/config/:/tmp/docker-mailserver/
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    stop_grace_period: 1m
+    # Uncomment if using `ENABLE_FAIL2BAN=1`:
+    # cap_add:
+    #   - NET_ADMIN
+    healthcheck:
+      test: "ss --listening --tcp | grep -P 'LISTEN.+:smtp' || exit 1"
+      timeout: 3s
+      retries: 0
+  ftp:
+    image: stilliard/pure-ftpd:latest
+    # build: ./docker-pure-ftpd/
+    ports:
+      - "21:21"
+      - "30000-30059:30000-30059"
+    volumes:
+      - "./docker-data/ftp/home:/home/username/"
+      - "./docker-data/ftp/conf:/etc/pure-ftpd/"
+      # - "./docker-data/ftp/passwd:/etc/pure-ftpd/passwd"
+    # command: /usr/sbin/pure-ftpd-ldap -c 30 -C 10 -l ldap:/etc/pure-ftpd/ldap.conf -E -j -R -P localhost -p 30000:30059 -d
+    # command: /run.sh -c 30 -C 10 -lldap:/etc/pure-ftpd/ldap.conf -E -j -R -P localhost -p 30000:30059 -d -d
+      #-l puredb:/etc/pure-ftpd/pureftpd.pdb 
+    # environment:
+      # FTP_USER_NAME: username
+      # FTP_USER_PASS: mypass
+      # FTP_USER_HOME: /home/username
+  db:
+    image: mongodb/mongodb-community-server:latest
+  web:
+    build: ./web
+    ports:
+      - "8000:3000"
+      # - "443:443"
+    depends_on:
+      - db
