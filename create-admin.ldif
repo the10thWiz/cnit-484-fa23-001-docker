@@ -1,0 +1,15 @@
+# docker-compose exec -T ldap ldapadd -h localhost -p 389 -D cn=admin,dc=example,dc=com -w JonSn0w < create-admin.ldif
+dn: cn=admin,dc=example,dc=com
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: PostfixBookMailAccount
+cn: admin
+sn: admin
+mail: @example.com
+# uid: 5003
+mailUidNumber: 5000
+mailGidNumber: 5000
+# TODO: do we need these?
+mailHomeDirectory: /home/v/admin
+mailStorageDirectory: maildir:/var/mail/example.com/admin

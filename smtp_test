@@ -1,0 +1,12 @@
+HELO relay.test.com
+MAIL FROM:<test@test.com>
+RCPT TO:<admin@example.com>
+DATA
+From: "t" <test@example.com>
+To: "a" <admin@example.com>
+Subject: Test message
+
+test
+.
+Quit
+
