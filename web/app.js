@@ -76,22 +76,17 @@ app.get("/register", function (req, res) {
 });
 
 app.post("/register", async function (req, res) {
-  console.log(`req from ${req.body.email}`);
   const salt = await bcrypt.genSalt(saltRounds);
-  console.log(`salt: ${salt}`);
   const hash = await bcrypt.hash(req.body.password, salt);
-  console.log(`hash: ${hash}`);
   const username = req.body.email;
   const newUser = new Hashing({
     email: username,
     password: hash,
   });
-  console.log(`user: ${newUser}`);
   await newUser.save();
 
   req.session.user = username;
   res.redirect("/loginSucces");
-  console.log(`redirected`);
 });
 
 async function ensureAuthenticated(req, res, next) {
@@ -100,11 +95,12 @@ async function ensureAuthenticated(req, res, next) {
     const foundEmail = await Hashing.findOne({ email: req.session.user });
     if (!foundEmail) {
       res.redirect("/login");
+    } else {
+      return next();
     }
   } else {
     res.redirect("/login");
   }
-  return next();
 }
 
 app.listen("3000", function () {
