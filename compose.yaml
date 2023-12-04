@@ -36,7 +36,7 @@ services:
       - "21:21"
       - "30000-30059:30000-30059"
     volumes:
-      - "./docker-data/ftp/home:/home/username/"
+      - "./docker-data/ftp/home:/home/ftpusers"
       - "./docker-data/ftp/conf:/etc/pure-ftpd/"
       # - "./docker-data/ftp/passwd:/etc/pure-ftpd/passwd"
     # command: /usr/sbin/pure-ftpd-ldap -c 30 -C 10 -l ldap:/etc/pure-ftpd/ldap.conf -E -j -R -P localhost -p 30000:30059 -d
