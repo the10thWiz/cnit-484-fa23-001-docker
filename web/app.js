@@ -61,8 +61,8 @@ app.post("/login", async function (req, res) {
   if (!foundEmail) {
     res.redirect("/register");
   } else {
-    const result = bcrypt.compare(password, foundEmail.password);
-    if (result) {
+    const result = await bcrypt.compare(password, foundEmail.password);
+    if (result === true) {
       req.session.user = username;
       res.redirect("/loginSucces");
     } else {
