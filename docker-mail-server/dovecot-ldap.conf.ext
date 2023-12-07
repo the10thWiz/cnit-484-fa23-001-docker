@@ -7,6 +7,6 @@ tls                 = no
 ldap_version        = 3
 pass_attrs          = uniqueIdentifier=user,userPassword=password
 pass_filter         = (&(objectClass=PostfixBookMailAccount)(uniqueIdentifier=%n))
-user_attrs          = =uid=5000,=gid=5000,mailStorageDirectory=/var/mail/cnit484fa23grp1.com
+user_attrs          = =uid=5000,=gid=5000,mail=maildir:/var/mail/cnit484fa23grp1.com/%n
 user_filter         = (&(objectClass=PostfixBookMailAccount)(uniqueIdentifier=%n))
 auth_bind           = no
